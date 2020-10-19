@@ -16,7 +16,7 @@ const socketRouter = require("./routes/socketRoutes");
 //! VARIABLES
 const PORT = 5000;
 const uri = process.env.MONGODB_URI || "mongodb://localhost/chat-app-db";
-const authRouter = require("./router/auth-routes");
+const authRouter = require("./routes/auth-routes");
 
 //! APP
 const app = express();

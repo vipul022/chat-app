@@ -44,7 +44,7 @@ const loginNew = (req, res) => {
 }
 
 const loginCreate = (req, res, next) => {
-console.log("inside loginCreate=>")
+// console.log("inside loginCreate=>")
     const loginFunc = passport.authenticate("local", {
 
     successRedirect: "/",
