@@ -9,23 +9,80 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.1/socket.io.js"
     integrity="sha512-AcZyhRP/tbAEsXCCGlziPun5iFvcSUpEz2jKkx0blkYKbxU81F+iq8FURwPn1sYFeksJ+sDDrI5XujsqSobWdQ=="
     crossorigin="anonymous"></script>
+  <style>
+    * {
+      margin: 0;
+      box-sizing: border-box
+    }
+
+    body {
+      background: rgb(22, 22, 22);
+    }
+
+    main {
+      margin-top: 1rem;
+      width: 60vw;
+      height: 80vh;
+      margin: auto;
+      background: rgb(245, 246, 255);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+
+    .infobar {
+      width: 100%;
+      background: rgb(63, 63, 221);
+      padding: 1rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: white;
+    }
+
+    .onlineIcon {
+      width: 1rem;
+      height: 1rem;
+      background: rgb(46, 221, 46);
+      border-radius: 50%;
+    }
+
+    form {
+      bottom: 0;
+      width: 100%;
+    }
+
+    section {
+      list-style-type: none;
+      padding: 1rem;
+      width: 100%;
+      height: 100%;
+    }
+
+
+    ul {
+      list-style: none;
+    }
+  </style>
   <title>Chat</title>
 </head>
 
 <body>
-  <header>
-
-  </header>
   <main>
+    <div class="infobar">
+
+      <h3>Chat Room</h3>
+      <div class="onlineIcon"></div>
+    </div>
     <section>
       <ul class="messages"></ul>
     </section>
     <form>
-      <input type="text" name="message" id="message">
+      <input type="text" name="message" class="form-control" id="message">
       <input type="submit" value="Send">
     </form>
   </main>
-  
+
   <script>
     const socket = io();
     const form = document.querySelector("form");
@@ -33,7 +90,7 @@
     form.addEventListener('submit', (e) => {
       e.preventDefault();
       socket.emit('message', form.message.value);
-      form.reset()
+      form.reset();
       return false;
     })
     socket.on('message', msg => {

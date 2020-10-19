@@ -1,6 +1,6 @@
 const router = require("express").Router();
-const { socketFunc, renderChat } = require("../controllers/socketController");
+const { renderChat } = require("../controllers/socketController");
 
-router.get("/", socketFunc, renderChat);
+router.get("/", renderChat);
 
 module.exports = router;
