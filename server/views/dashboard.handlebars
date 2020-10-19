@@ -5,19 +5,39 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard</title>
-  
+
 </head>
 
 <body>
-  <h1>Enter a room</h1>
-  {{!-- <input type="text" name="room" id="room" placeholder="enter room name..."> --}}
-  <button>Join</button>
+  <div class="join-container">
+    <header class="join-header">
+      <h1>Enter a room</h1>
+    </header>
+    <div class="main">
+      <form action="/chat">
+        <div class="username">
+          <label for"username">Username</label>
+          <input type="text" name="username" id="username" placeholder="Enter username ..." />
+        </div>
+        <div class="room">
+          <label for"room">Room</label>
+          <select name="room" id="room">
+            <option value="code">Code</option>
+            <option value="music">Music</option>
+            <option value="fun">Fun</option>
+            <option value="events">Events</option>
+          </select>
+        </div>
+        <button type="submit" class="button">Join Chat</button>
 
-  <script>
-    document.querySelector("button").addEventListener('click', e => {
-      window.location = "/chat"
-    })
-  </script>
+      </form>
+    </div>
+
+  </div>
+
+
+
+
 
 </body>
 

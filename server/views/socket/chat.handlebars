@@ -9,6 +9,10 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.1/socket.io.js"
     integrity="sha512-AcZyhRP/tbAEsXCCGlziPun5iFvcSUpEz2jKkx0blkYKbxU81F+iq8FURwPn1sYFeksJ+sDDrI5XujsqSobWdQ=="
     crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.9.4/qs.min.js"
+    integrity="sha512-BHtomM5XDcUy7tDNcrcX1Eh0RogdWiMdXl3wJcKB3PFekXb3l5aDzymaTher61u6vEZySnoC/SAj2Y/p918Y3w=="
+    crossorigin="anonymous"></script>
   <style>
     * {
       margin: 0;
@@ -87,17 +91,36 @@
     const socket = io();
     const form = document.querySelector("form");
     const messages = document.querySelector(".messages")
+    const { username, room } = Qs.parse(location.search, {
+      ignoreQueryPrefix: true
+    })
     form.addEventListener('submit', (e) => {
       e.preventDefault();
-      socket.emit('message', form.message.value);
+      const payload = {
+        msg: form.message.value,
+        room: room
+      }
+      socket.emit('message', payload);
+
       form.reset();
       return false;
     })
-    socket.on('message', msg => {
+    socket.on('message', (msg) => {
+      console.log("room=> ", room, "msg=> ", msg)
       const message = document.createElement("li");
       message.textContent = msg;
       messages.appendChild(message)
     })
+
+    //!//get username and room from url using qs cdn
+    // qs is a library that allow us to use info in query string
+    //location.search gives us the url, ignoreQueryPrefix ignores the symbols in query string
+
+
+    socket.emit('join', { username, room }, () => { })
+
+    console.log("username=>", username)
+    console.log("room=>", room)
   </script>
 </body>
 

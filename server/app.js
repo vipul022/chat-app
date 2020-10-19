@@ -3,7 +3,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const session = require("express-session");
-const MongoStore = require("connect-mongo")(session); //!session here is mapped with the const session on line 8, both should be same
+const MongoStore = require("connect-mongo")(session); //!session here is mapped with the const session on line 6, both should be same
 const exphbs = require("express-handlebars");
 const passport = require("passport");
 const path = require("path");
@@ -13,9 +13,9 @@ require("dotenv").config();
 const socketRouter = require("./routes/socketRoutes");
 
 //! VARIABLES
-const PORT = 5000;
+const PORT = 5000 || process.env.PORT;
 const uri = process.env.MONGODB_URI || "mongodb://localhost/chat-app-db";
-const authRouter = require("./router/auth-routes");
+const authRouter = require("./routes/auth-routes");
 
 //! APP
 const app = express();
@@ -49,8 +49,25 @@ const io = require("socket.io")(server);
 io.on("connection", (socket) => {
   console.log(`User id: ${socket.id}`);
 
-  socket.on("message", (msg) => {
-    io.emit("message", msg);
+  socket.on("join", ({ username, room }, callback) => {
+    socket.join(room);
+
+    socket.emit("message", `${username}, welcome to the ${room} room!`);
+
+    socket.broadcast
+      .to(room)
+      .emit("message", `${username}, has join the chat!`);
+    socket.emit("message", "Welcome to Room"); //!this will only emit msg to user that is connecting
+
+    callback();
+  });
+
+  //!this msg will be visible to all the users except the user who has just connected
+
+  socket.on("message", ({ msg, room }) => {
+    //!catching the msg from client
+    console.log("msg in server=>", msg);
+    io.to(room).emit("message", msg); //!sending msg back to client
   });
 
   socket.on("disconnect", () => {
