@@ -1,12 +1,10 @@
-const UserModel = require("../models/user")
-const passport = require("passport")
+const UserModel = require("../models/user");
+const passport = require("passport");
 
-const registerNew = (req, res)=> {
-// console.log("registerNew=>", req.body);
-res.render("auth/register")
-
+const registerNew = (req, res) => {
+  // console.log("registerNew=>", req.body);
+  res.render("auth/register");
 };
-
 
 
 const registerCreate = (req, res, next) => {

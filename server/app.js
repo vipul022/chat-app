@@ -47,16 +47,27 @@ app.use(
 const server = require("http").createServer(app);
 const io = require("socket.io")(server);
 io.on("connection", (socket) => {
-
   console.log(`User id: ${socket.id}`);
-socket.broadcast.emit("message", "A user has joined the chat")
-//!this msg will be visible to all the users except the user who has just connected
 
-socket.emit("message",   "Welcome to Room")//!this will only emit msg to user that is connecting
+  socket.on("join", ({ username, room }, callback) => {
+    socket.join(room);
 
-  socket.on("message", (msg) => { //!catching the msg from client
-// console.log("msg in server=>", msg)
-    io.emit("message", msg);//!sending msg back to client
+    socket.emit("message", `${username}, welcome to the ${room} room!`);
+
+    socket.broadcast
+      .to(room)
+      .emit("message", `${username}, has join the chat!`);
+    socket.emit("message", "Welcome to Room"); //!this will only emit msg to user that is connecting
+
+    callback();
+  });
+
+  //!this msg will be visible to all the users except the user who has just connected
+
+  socket.on("message", ({ msg, room }) => {
+    //!catching the msg from client
+    console.log("msg in server=>", msg);
+    io.to(room).emit("message", msg); //!sending msg back to client
   });
 
   socket.on("disconnect", () => {
@@ -76,8 +87,7 @@ app.set("view engine", "handlebars");
 
 //! ROUTERS
 app.get("/", (req, res) => {
-  res.render("dashboard")
-
+  res.render("dashboard");
 });
 
 app.use("/chat", socketRouter);

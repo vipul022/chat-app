@@ -91,14 +91,22 @@
     const socket = io();
     const form = document.querySelector("form");
     const messages = document.querySelector(".messages")
+    const { username, room } = Qs.parse(location.search, {
+      ignoreQueryPrefix: true
+    })
     form.addEventListener('submit', (e) => {
       e.preventDefault();
-      socket.emit('message', form.message.value);
+      const payload = {
+        msg: form.message.value,
+        room: room
+      }
+      socket.emit('message', payload);
 
       form.reset();
       return false;
     })
-    socket.on('message', msg => {
+    socket.on('message', (msg) => {
+      console.log("room=> ", room, "msg=> ", msg)
       const message = document.createElement("li");
       message.textContent = msg;
       messages.appendChild(message)
@@ -107,9 +115,10 @@
     //!//get username and room from url using qs cdn
     // qs is a library that allow us to use info in query string
     //location.search gives us the url, ignoreQueryPrefix ignores the symbols in query string
-    const { username, room } = Qs.parse(location.search, {
-      ignoreQueryPrefix: true
-    })
+
+
+    socket.emit('join', { username, room }, () => { })
+
     console.log("username=>", username)
     console.log("room=>", room)
   </script>
