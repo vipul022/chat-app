@@ -10,15 +10,16 @@
 
 <body>
   <h1>Enter a room</h1>
-  {{!-- <input type="text" name="room" id="room" placeholder="enter room name..."> --}}
+  
+  <input type="text" name="room" id="room" placeholder="enter room name...">
   <button>Join</button>
-
+  <a href="user/logout">Logout</a>
+  
   <script>
     document.querySelector("button").addEventListener('click', e => {
       window.location = "/chat"
     })
   </script>
-
 </body>
 
 </html>
