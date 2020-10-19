@@ -2,7 +2,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-const session = require('express-session')
+const session = require("express-session");
 const MongoStore = require("connect-mongo")(session); //!session here is mapped with the const session on line 8, both should be same
 const exphbs = require("express-handlebars");
 const passport = require("passport");
@@ -15,8 +15,8 @@ const socketRouter = require("./routes/socketRoutes");
 
 //! VARIABLES
 const PORT = 5000;
-const uri =  process.env.MONGODB_URI || "mongodb://localhost/chat-app-db" ;
-const authRouter = require("./router/auth-routes")
+const uri = process.env.MONGODB_URI || "mongodb://localhost/chat-app-db";
+const authRouter = require("./router/auth-routes");
 
 //! APP
 const app = express();
@@ -43,15 +43,16 @@ io.on("connection", (socket) => {
 });
 app.use(cors());
 app.use(express.json());
-app.use(express.urlencoded({
-extended:true
-}));
-
+app.use(
+  express.urlencoded({
+    extended: true,
+  })
+);
 
 //!express session stores session id as a cookie and reads the cookie on server side and stores data on server side
 app.use(
   session({
-    secret: "secret key", 
+    secret: "secret key",
     resave: false,
     saveUninitialized: false, //!in canvas it is set as true but we need to set it as false in future projects
     cookie: { expires: 600000 }, //!this is 10 minutes 10*60*1000
@@ -66,13 +67,12 @@ app.use(passport.session()); //!this keeps track of logged in user
 
 //! Register `hbs.engine` with the Express app.
 
-app.engine('handlebars', exphbs());
-app.set('view engine', 'handlebars');
-
+app.engine("handlebars", exphbs());
+app.set("view engine", "handlebars");
 
 //! ROUTERS
 app.get("/", (req, res) => {
-  res.render("dashboard")
+  res.render("dashboard");
 });
 
 app.use("/chat", socketRouter);
