@@ -1,10 +1,10 @@
 const mongoose = require("mongoose");
 
-const Schema = mongoose.Shcema;
+const Schema = mongoose.Schema;
 
 const userSchema = new Schema(
   {
-    name: {
+    username: {
       type: String,
       required: true,
       unique: true,
@@ -18,6 +18,6 @@ const userSchema = new Schema(
     timestamps: true,
   }
 );
-User.plugin(require('mongoose-bcrypt'));
+userSchema.plugin(require('mongoose-bcrypt'));
 
 module.exports = mongoose.model("User", userSchema);
