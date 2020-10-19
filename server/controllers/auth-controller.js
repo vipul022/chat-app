@@ -33,11 +33,27 @@ UserModel.create({ username, password })
 };
 
 const logOut = (req, res) => {
-// console.log("req.session=>", req.session);
+// console.log("req.session=>", req.user);
   req.logout();
   //! req.logout is provided by passport
   res.redirect("/");
 }
 
+const loginNew = (req, res) => {
+    res.render("auth/login")
+}
 
-module.exports = {registerNew, registerCreate, logOut}
+const loginCreate = (req, res, next) => {
+console.log("inside loginCreate=>")
+    const loginFunc = passport.authenticate("local", {
+
+    successRedirect: "/",
+    failureRedirect: "login",
+
+  });
+
+  loginFunc(req, res, next);
+}
+
+
+module.exports = {registerNew, registerCreate, logOut, loginNew, loginCreate}
