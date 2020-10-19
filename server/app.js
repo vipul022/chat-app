@@ -1,7 +1,7 @@
 //! PACKAGES
 const express = require("express");
 const mongoose = require("mongoose");
-const path = require("path");
+// const path = require("path");
 const exphbs = require("express-handlebars");
 require("dotenv").config();
 
@@ -22,12 +22,23 @@ app.set("view engine", "handlebars");
 //! MIDDLEWARE
 
 //! SOCKET.IO
-// const server = require("http").createServer(app);
-const io = require('socket.io')(app)
+const server = require("http").createServer(app);
+const io = require("socket.io")(server);
+io.on("connection", (socket) => {
+  console.log("User Connected");
+
+  socket.on("message", (msg) => {
+    io.emit("message", msg);
+  });
+
+  socket.on("disconnect", () => {
+    console.log("User Disconnected!");
+  });
+});
 
 //! ROUTERS
 app.get("/", (req, res) => {
-  console.log("on root route");
+  res.render("dashboard")
 });
 
 app.use("/chat", socketRouter);
@@ -42,6 +53,6 @@ mongoose.connect(
 );
 
 //! APP LISTEN
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Listening at localhost:${PORT}`);
 });
