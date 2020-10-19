@@ -5,15 +5,21 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard</title>
+  
 </head>
 
 <body>
   <h1>Enter a room</h1>
+  
   <input type="text" name="room" id="room" placeholder="enter room name...">
-  <input type="submit" value="Join">
+  <button>Join</button>
   <a href="user/logout">Logout</a>
-  {{!-- When user clicks join then emit a join event --}}
-  {{!--  --}}
+  
+  <script>
+    document.querySelector("button").addEventListener('click', e => {
+      window.location = "/chat"
+    })
+  </script>
 </body>
 
 </html>

@@ -1,15 +1,7 @@
-
-
-const socketFunc = (req, res, next) => {
-  
-  next()
-};
-
 const renderChat = (req, res, next) => {
-  res.render("chat");
+  res.render("socket/chat");
 };
 
 module.exports = {
-  socketFunc,
   renderChat,
 };
