@@ -10,6 +10,9 @@ const passport = require("passport");
 const path = require("path");
 require("dotenv").config();
 
+//! FILES
+const socketRouter = require("./routes/socketRoutes");
+
 //! VARIABLES
 const PORT = 5000;
 const uri =  process.env.MONGODB_URI || "mongodb://localhost/chat-app-db" ;
@@ -18,8 +21,26 @@ const authRouter = require("./router/auth-routes")
 //! APP
 const app = express();
 
+//! HANDLEBARS
+app.engine("handlebars", exphbs());
+app.set("view engine", "handlebars");
+
 //! MIDDLEWARE
-app.use(express.static(path.join(__dirname, "../client")));
+
+//! SOCKET.IO
+const server = require("http").createServer(app);
+const io = require("socket.io")(server);
+io.on("connection", (socket) => {
+  console.log("User Connected");
+
+  socket.on("message", (msg) => {
+    io.emit("message", msg);
+  });
+
+  socket.on("disconnect", () => {
+    console.log("User Disconnected!");
+  });
+});
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({
@@ -51,9 +72,10 @@ app.set('view engine', 'handlebars');
 
 //! ROUTERS
 app.get("/", (req, res) => {
-  console.log("on root route");
+  res.render("dashboard")
 });
 
+app.use("/chat", socketRouter);
 app.use("/user", authRouter);
 
 //! DATABASE
@@ -66,6 +88,6 @@ mongoose.connect(
 );
 
 //! APP LISTEN
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Listening at localhost:${PORT}`);
 });
