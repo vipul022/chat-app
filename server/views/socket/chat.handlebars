@@ -13,6 +13,9 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.9.4/qs.min.js"
     integrity="sha512-BHtomM5XDcUy7tDNcrcX1Eh0RogdWiMdXl3wJcKB3PFekXb3l5aDzymaTher61u6vEZySnoC/SAj2Y/p918Y3w=="
     crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"
+    integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ=="
+    crossorigin="anonymous"></script>
   <style>
     * {
       margin: 0;
@@ -72,44 +75,75 @@
 </head>
 
 <body>
+  {{#if loggedIn}}
+
   <main>
     <div class="infobar">
 
       <h3>Chat Room</h3>
       <div class="onlineIcon"></div>
     </div>
-    <section>
-      <ul class="messages"></ul>
-    </section>
+    <section class="messages"></section>
     <form>
       <input type="text" name="message" class="form-control" id="message">
       <input type="submit" value="Send">
     </form>
   </main>
+  {{else}}
+  <h3>You need to be logged in to enter this chat room</h3>
+  {{/if}}
 
   <script>
     const socket = io();
     const form = document.querySelector("form");
     const messages = document.querySelector(".messages")
+    const { username, room } = Qs.parse(location.search, {
+      ignoreQueryPrefix: true
+    })
     form.addEventListener('submit', (e) => {
       e.preventDefault();
-      socket.emit('message', form.message.value);
+      const payload = {
+        msg: form.message.value,
+        room: room
+      }
+
+
+
+      socket.emit('message', payload);
 
       form.reset();
       return false;
     })
-    socket.on('message', msg => {
-      const message = document.createElement("li");
-      message.textContent = msg;
-      messages.appendChild(message)
+    socket.on('message', (msg) => {
+      const messages = document.querySelector(".messages"); // section
+      const div = document.createElement("div");
+      const nameP = document.createElement('span');
+      const msgP = document.createElement('span')
+      const timeP = document.createElement('p');
+
+      console.log(msgP.textContent)
+      msgP.textContent = msg;
+      console.log(msgP.textContent)
+      nameP.textContent = `${username}: `;
+      timeP.textContent = moment().format("h:mm a")
+
+      div.appendChild(nameP)
+      div.appendChild(msgP)
+      div.appendChild(timeP)
+      messages.appendChild(div)
+
     })
+
+    // time: moment().format("hh:mm:ss")
+    // <li><span>name:</span> msg <span>time</span></li>
 
     //!//get username and room from url using qs cdn
     // qs is a library that allow us to use info in query string
     //location.search gives us the url, ignoreQueryPrefix ignores the symbols in query string
-    const { username, room } = Qs.parse(location.search, {
-      ignoreQueryPrefix: true
-    })
+
+
+    socket.emit('join', { username, room })
+
     console.log("username=>", username)
     console.log("room=>", room)
     socket.emit({ username, room }) //!sending username and room to server

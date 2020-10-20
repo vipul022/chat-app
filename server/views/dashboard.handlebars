@@ -14,6 +14,9 @@
       <h1>Enter a room</h1>
     </header>
     <div class="main">
+
+
+      {{#if loggedIn}}
       <form action="/chat">
         <div class="username">
           <label for"username">Username</label>
@@ -29,8 +32,12 @@
           </select>
         </div>
         <button type="submit" class="button">Join Chat</button>
-
       </form>
+      <a href="/user/logout">Log Out</a>
+      {{else}}
+      <h3>You need to be logged in to enter a chat room</h3>
+      <a href="/user/login">Login</a> or <a href="/user/register">Register</a>
+      {{/if}}
     </div>
 
   </div>
