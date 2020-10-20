@@ -4,6 +4,107 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      background-color: #292929;
+
+    }
+
+    .join-container {
+      max-width: 600px;
+      margin: 60px auto;
+      background-color: bisque;
+    }
+
+    .join-header {
+      text-align: center;
+      padding: 30px;
+    }
+
+    .main {
+      padding: 30px;
+    }
+
+    .enter-room {
+      margin-bottom: 10px;
+    }
+
+    .form-content {
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .btns {
+      display: flex;
+    }
+
+    .form-content input[type="text"] {
+      font-size: 16px;
+      padding: 5px;
+      height: 40px;
+      width: 70%;
+      border: none;
+      border-radius: 10px;
+      background-color: blanchedalmond;
+    }
+
+    .form-content input[type="text"]:focus {
+      outline: none;
+    }
+
+    .form-content label {
+      margin-bottom: 5px;
+    }
+
+    .form-content select {
+      font-size: 16px;
+      padding: 5px;
+      height: 40px;
+      width: 50%;
+      border: none;
+      border-radius: 10px;
+      background-color: blanchedalmond;
+    }
+
+    .form-content select:focus {
+      outline: none;
+    }
+
+    .btns {
+
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .button {
+      margin-top: 20px;
+      padding: 5px;
+      margin-top: 20px;
+      padding: 10px 15px;
+      font-size: 16px;
+      cursor: pointer;
+      border: none;
+      border-radius: 10px;
+      background-color: cornflowerblue;
+
+
+    }
+
+
+
+    .join-header-info {
+      font-style: italic;
+    }
+
+    h3 {
+      text-align: center;
+    }
+  </style>
   <title>Dashboard</title>
 
 </head>
@@ -11,36 +112,60 @@
 <body>
   <div class="join-container">
     <header class="join-header">
-      <h1>Enter a room</h1>
+      <h1>Express Chat</h1>
+      <p class="join-header-info">It's unopinionated and fast</p>
     </header>
+
+    {{#if loggedIn}}
     <div class="main">
+      <div class="enter-room">
+        <h2>Enter a room</h2>
 
 
-      {{#if loggedIn}}
+      </div>
       <form action="/chat">
-        <div class="username">
+        <div class="form-content">
           <label for"username">Username</label>
-          <input type="text" name="username" id="username" placeholder="Enter username ..." />
+          <input type="text" name="username" id="username" placeholder="Enter username ..." required />
         </div>
-        <div class="room">
+        <div class="form-content">
           <label for"room">Room</label>
-          <select name="room" id="room">
+          <select name="room" id=" room">
+            <option value="" disabled selected>Select your option</option>
             <option value="code">Code</option>
             <option value="music">Music</option>
             <option value="fun">Fun</option>
             <option value="events">Events</option>
           </select>
         </div>
-        <button type="submit" class="button">Join Chat</button>
+        <div class="btns">
+          <button type="submit" class="button">Join Chat</button>
       </form>
-      <a href="/user/logout">Log Out</a>
-      {{else}}
+
+      <form action="/user/logout">
+        <input type="submit" class="button" value="Log out" />
+      </form>
+      <div />
+    </div>
+    {{else}}
+    <div class="h3">
       <h3>You need to be logged in to enter a chat room</h3>
-      <a href="/user/login">Login</a> or <a href="/user/register">Register</a>
-      {{/if}}
+    </div>
+    <div class="btns">
+      <form action="/user/login">
+        <input type="submit" class="button" value="Login" />
+      </form>
+
+      <form action="/user/register">
+        <input type="submit" class="button" value="Register" />
+      </form>
     </div>
 
+
+    {{/if}}
   </div>
+
+
 
 
 
