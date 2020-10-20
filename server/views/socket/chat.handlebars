@@ -95,6 +95,7 @@
 
   <script>
     const socket = io();
+    
     const form = document.querySelector("form");
     const messages = document.querySelector(".messages")
     const { username, room } = Qs.parse(location.search, {
@@ -102,51 +103,44 @@
     })
     form.addEventListener('submit', (e) => {
       e.preventDefault();
-      const payload = {
-        msg: form.message.value,
-        room: room
+      const user = {
+        name: username,
+        room: room,
+        id: socket.id
       }
 
-
-
-      socket.emit('message', payload);
+      socket.emit('sendMessage', {msg: form.message.value})
 
       form.reset();
       return false;
     })
-    socket.on('message', (msg) => {
+    socket.on('message', ({user, text}) => {
       const messages = document.querySelector(".messages"); // section
       const div = document.createElement("div");
       const nameP = document.createElement('span');
       const msgP = document.createElement('span')
       const timeP = document.createElement('p');
 
-      console.log(msgP.textContent)
-      msgP.textContent = msg;
-      console.log(msgP.textContent)
-      nameP.textContent = `${username}: `;
+      msgP.textContent = text;
+      nameP.textContent = `${user}: `;
+      nameP.className = "name"
       timeP.textContent = moment().format("h:mm a")
+      timeP.className = "time"
 
       div.appendChild(nameP)
       div.appendChild(msgP)
       div.appendChild(timeP)
       messages.appendChild(div)
-
     })
 
-    // time: moment().format("hh:mm:ss")
-    // <li><span>name:</span> msg <span>time</span></li>
-
-    //!//get username and room from url using qs cdn
-    // qs is a library that allow us to use info in query string
-    //location.search gives us the url, ignoreQueryPrefix ignores the symbols in query string
-
-
     socket.emit('join', { username, room })
+<<<<<<< HEAD
 
     console.log("username=>", username)
     console.log("room=>", room)
     socket.emit({ username, room }) //!sending username and room to server
+=======
+>>>>>>> 86428eb04f81be7c6c51c409a0ad9f0cf03ad94d
   </script>
 </body>
 
