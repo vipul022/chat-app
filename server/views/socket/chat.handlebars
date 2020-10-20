@@ -95,7 +95,7 @@
 
   <script>
     const socket = io();
-    
+
     const form = document.querySelector("form");
     const messages = document.querySelector(".messages")
     const { username, room } = Qs.parse(location.search, {
@@ -109,12 +109,12 @@
         id: socket.id
       }
 
-      socket.emit('sendMessage', {msg: form.message.value})
+      socket.emit('sendMessage', { msg: form.message.value })
 
       form.reset();
       return false;
     })
-    socket.on('message', ({user, text}) => {
+    socket.on('message', ({ user, text }) => {
       const messages = document.querySelector(".messages"); // section
       const div = document.createElement("div");
       const nameP = document.createElement('span');
