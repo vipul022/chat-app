@@ -49,6 +49,7 @@ const io = require("socket.io")(server);
 io.on("connection", (socket) => {
 
   console.log(`User id: ${socket.id}`);
+
 socket.broadcast.emit("message", "A user has joined the chat")
 //!this msg will be visible to all the users except the user who has just connected
 
@@ -57,6 +58,7 @@ socket.emit("message",   "Welcome to Room")//!this will only emit msg to user th
   socket.on("message", (msg) => { //!catching the msg from client
 // console.log("msg in server=>", msg)
     io.emit("message", msg);//!sending msg back to client
+
   });
 
   socket.on("disconnect", () => {

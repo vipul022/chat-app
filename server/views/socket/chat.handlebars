@@ -112,6 +112,7 @@
     })
     console.log("username=>", username)
     console.log("room=>", room)
+    socket.emit({ username, room }) //!sending username and room to server
   </script>
 </body>
 
