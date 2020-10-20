@@ -13,7 +13,7 @@ const socketRouter = require("./routes/socketRoutes");
 const { addUser, removeUser, getUser } = require('./controllers/socketController')
 
 //! VARIABLES
-const PORT = 5000 || process.env.PORT;
+const PORT = process.env.PORT || 5000;
 const uri = process.env.MONGODB_URI || "mongodb://localhost/chat-app-db";
 const authRouter = require("./routes/auth-routes");
 
