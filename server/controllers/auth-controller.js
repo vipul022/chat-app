@@ -26,6 +26,9 @@ const { username, password } = req.body;
 
 UserModel.create({ username, password })
 .then((user) => newUserHandler(user))
+.catch(err => res.json({
+Error: err.message
+}))
 // .catch(next(err))
 // .then((user) => console.log("user=>", user));
 };
