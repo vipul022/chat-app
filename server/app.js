@@ -6,8 +6,6 @@ const session = require("express-session");
 const MongoStore = require("connect-mongo")(session); //!session here is mapped with the const session on line 6, both should be same
 const exphbs = require("express-handlebars");
 const passport = require("passport");
-const moment = require("moment");
-const path = require("path");
 require("dotenv").config();
 
 //! FILES
@@ -27,14 +25,18 @@ app.engine("handlebars", exphbs());
 app.set("view engine", "handlebars");
 
 //! MIDDLEWARE
+//* Cors
 app.use(cors());
+//* express.json()
 app.use(express.json());
+//* express.urlEncoded()
 app.use(
   express.urlencoded({
     extended: true,
   })
 );
 //!express session stores session id as a cookie and reads the cookie on server side and stores data on server side
+//* session
 app.use(
   session({
     secret: process.env.SECRET,
@@ -52,17 +54,17 @@ io.on("connection", (socket) => {
   console.log(`User has connected`);
 
   socket.on("join", ({ username, room }) => {
-    const { user } = addUser({ id: socket.id, username, room });
-    socket.join(room);
+    const { user } = addUser({ id: socket.id, name:username, room });
+    socket.join(user.room);
 
     socket.emit("message", {
       user: "admin",
-      text: `${username}, welcome to the ${room} room!`,
+      text: `${user.name}, welcome to the ${user.room} room!`,
     });
 
-    socket.broadcast.to(room).emit("message", {
+    socket.broadcast.to(user.room).emit("message", {
       user: "admin",
-      text: `${username}, has join the chat!`,
+      text: `${user.name}, has join the chat!`,
     });
   });
 
