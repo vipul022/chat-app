@@ -6,6 +6,7 @@ const session = require("express-session");
 const MongoStore = require("connect-mongo")(session); //!session here is mapped with the const session on line 6, both should be same
 const exphbs = require("express-handlebars");
 const passport = require("passport");
+const moment = require('moment');
 const path = require("path");
 require("dotenv").config();
 
@@ -49,7 +50,7 @@ const io = require("socket.io")(server);
 io.on("connection", (socket) => {
   console.log(`User id: ${socket.id}`);
 
-  socket.on("join", ({ username, room }, callback) => {
+  socket.on("join", ({ username, room }) => {
     socket.join(room);
 
     socket.emit("message", `${username}, welcome to the ${room} room!`);
@@ -57,16 +58,12 @@ io.on("connection", (socket) => {
     socket.broadcast
       .to(room)
       .emit("message", `${username}, has join the chat!`);
-    socket.emit("message", "Welcome to Room"); //!this will only emit msg to user that is connecting
-
-    callback();
   });
 
   //!this msg will be visible to all the users except the user who has just connected
 
   socket.on("message", ({ msg, room }) => {
     //!catching the msg from client
-    console.log("msg in server=>", msg);
     io.to(room).emit("message", msg); //!sending msg back to client
   });
 
@@ -87,7 +84,7 @@ app.set("view engine", "handlebars");
 
 //! ROUTERS
 app.get("/", (req, res) => {
-  res.render("dashboard");
+  res.render("dashboard", { loggedIn: req.user });
 });
 
 app.use("/chat", socketRouter);

@@ -1,5 +1,5 @@
-const renderChat = (req, res, next) => {
-  res.render("socket/chat");
+const renderChat = (req, res) => {
+  res.render("socket/chat", {loggedIn: req.user});
 };
 
 module.exports = {
