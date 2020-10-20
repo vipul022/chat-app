@@ -6,12 +6,13 @@ const session = require("express-session");
 const MongoStore = require("connect-mongo")(session); //!session here is mapped with the const session on line 6, both should be same
 const exphbs = require("express-handlebars");
 const passport = require("passport");
-const moment = require('moment');
+const moment = require("moment");
 const path = require("path");
 require("dotenv").config();
 
 //! FILES
 const socketRouter = require("./routes/socketRoutes");
+const { addUser, removeUser, getUser } = require('./controllers/socketController')
 
 //! VARIABLES
 const PORT = 5000 || process.env.PORT;
@@ -48,27 +49,38 @@ app.use(
 const server = require("http").createServer(app);
 const io = require("socket.io")(server);
 io.on("connection", (socket) => {
-  console.log(`User id: ${socket.id}`);
+  console.log(`User has connected`);
 
   socket.on("join", ({ username, room }) => {
+    const { user } = addUser({ id: socket.id, username, room });
     socket.join(room);
 
-    socket.emit("message", `${username}, welcome to the ${room} room!`);
+    socket.emit("message", {
+      user: "admin",
+      text: `${username}, welcome to the ${room} room!`,
+    });
 
-    socket.broadcast
-      .to(room)
-      .emit("message", `${username}, has join the chat!`);
+    socket.broadcast.to(room).emit("message", {
+      user: "admin",
+      text: `${username}, has join the chat!`,
+    });
   });
 
-  //!this msg will be visible to all the users except the user who has just connected
+  //* this msg will be visible to all the users except the user who has just connected
 
-  socket.on("message", ({ msg, room }) => {
-    //!catching the msg from client
-    io.to(room).emit("message", msg); //!sending msg back to client
+  socket.on("sendMessage", ({ msg }) => {
+    const user = getUser(socket.id);
+    io.to(user.room).emit("message", { user: user.name, text: msg }); //!sending msg back to client
   });
 
   socket.on("disconnect", () => {
-    console.log("User Disconnected!");
+    const user = removeUser(socket.id)
+    if (user) {
+      io.to(user.room).emit('message', {
+        user: "admin",
+        text: `${user.name} has left the chat.`
+      })
+    }
   });
 });
 
