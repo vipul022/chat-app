@@ -53,8 +53,8 @@ const io = require("socket.io")(server);
 io.on("connection", (socket) => {
   console.log(`User has connected`);
 
-  socket.on("join", ({ username, room }) => {
-    const { user } = addUser({ id: socket.id, name:username, room });
+  socket.on("join", ({ nickname, room }) => {
+    const { user } = addUser({ id: socket.id, name:nickname, room });
     socket.join(user.room);
 
     socket.emit("message", {
