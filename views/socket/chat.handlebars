@@ -39,7 +39,6 @@
 
     .infobar {
       width: 100%;
-      background: rgb(63, 63, 221);
       padding: 1rem 3rem;
       display: flex;
       justify-content: space-between;
@@ -48,10 +47,15 @@
     }
 
     .onlineIcon {
-      width: 1rem;
-      height: 1rem;
+      width: 1.3rem;
+      height: 1.3rem;
       background: rgb(46, 221, 46);
       border-radius: 50%;
+      border: 1px solid rgb(92, 92, 92);
+    }
+
+    .time {
+      color: #b9b9b9;
     }
 
     form {
@@ -74,6 +78,24 @@
     .messages {
       overflow-y: scroll;
     }
+
+    input[type=submit] {
+      background-color: #3f3fdd;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      margin: 0.5rem;
+      border-radius: 5rem;
+    }
+    button {
+      background: rgb(207, 207, 207);
+      color: rgb(29, 29, 29);
+      border: none;
+      padding: 0.5rem 1rem;
+      margin: 0.5rem;
+      border-radius: 5rem;
+    }
+
   </style>
   <title>Chat</title>
 </head>
@@ -84,13 +106,14 @@
   <main>
     <div class="infobar">
 
-      <h3>Chat Room</h3>
+      <h3 class="room-name">Chat Room</h3>
       <div class="onlineIcon"></div>
     </div>
     <section class="messages"></section>
     <form>
       <input type="text" name="message" class="form-control" id="message">
       <input type="submit" value="Send">
+      <button class="leave">Leave</button>
     </form>
   </main>
   {{else}}
@@ -98,13 +121,23 @@
   {{/if}}
 
   <script>
+
+    document.querySelector("button").addEventListener('click', () => {
+      window.location = "/"
+    })
+
     const socket = io();
-    
+
     const form = document.querySelector("form");
     const messages = document.querySelector(".messages")
-    const { username, room } = Qs.parse(location.search, {
+    const { username, room, color } = Qs.parse(location.search, {
       ignoreQueryPrefix: true
     })
+
+    document.querySelector(".room-name").textContent = `${room} Room`;
+
+    document.querySelector(".infobar").style.backgroundColor = color;
+
     form.addEventListener('submit', (e) => {
       e.preventDefault();
       const user = {
@@ -113,18 +146,27 @@
         id: socket.id
       }
 
-      socket.emit('sendMessage', {msg: form.message.value})
+      socket.emit('sendMessage', { msg: form.message.value })
 
       form.reset();
       return false;
     })
-    socket.on('message', ({user, text}) => {
+    socket.on('message', ({ user, text }) => {
       const messages = document.querySelector(".messages"); // section
       const div = document.createElement("div");
       const nameP = document.createElement('span');
       const msgP = document.createElement('span')
       const timeP = document.createElement('p');
 
+      if (user === "admin") {
+        nameP.style.fontWeight = "bold";
+        nameP.style.color = "black";
+      } else {
+        nameP.style.fontWeight = "bold"
+        nameP.style.color = color
+      }
+
+      div.className = "message"
       msgP.textContent = text;
       nameP.textContent = `${user}: `;
       nameP.className = "name"
