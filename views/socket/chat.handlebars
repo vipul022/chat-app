@@ -158,7 +158,18 @@
       messages.appendChild(div)
     })
 
+<<<<<<< HEAD:server/views/socket/chat.handlebars
+    socket.emit('join', { username, room })
+<<<<<<< HEAD
+
+    console.log("username=>", username)
+    console.log("room=>", room)
+    socket.emit({ username, room }) //!sending username and room to server
+=======
+>>>>>>> 86428eb04f81be7c6c51c409a0ad9f0cf03ad94d
+=======
     socket.emit('join', { nickname, room })
+>>>>>>> ed58785079699cd38301070b42440402dbd0398a:views/socket/chat.handlebars
   </script>
 </body>
 

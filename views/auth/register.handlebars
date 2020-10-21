@@ -1,14 +1,109 @@
-<h2>Sign up</h2>
-<form method="post" action="/user/register">
-  <div>
-    <label> Username</label>
-    <input type="username" name="username" />
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      background-color: #292929;
+      color: rgb(255, 255, 255);
+
+    }
+
+    .register-container {
+      max-width: 600px;
+      margin: 60px auto;
+      background-color: bisque;
+    }
+
+    .join-header {
+      text-align: center;
+      padding: 30px;
+    }
+
+    .join-header-info {
+      font-style: italic;
+    }
+
+    .form-content {
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-content input[type="text"] {
+      font-size: 16px;
+      padding: 5px;
+      height: 40px;
+      width: 70%;
+      border: none;
+      border-radius: 10px;
+      background-color: blanchedalmond;
+      color: black;
+
+    }
+
+    .form-content input[type="password"] {
+      font-size: 16px;
+      padding: 5px;
+      height: 40px;
+      width: 70%;
+      border: none;
+      border-radius: 10px;
+      background-color: blanchedalmond;
+      color: black;
+    }
+
+
+
+    input:focus {
+      outline: none;
+    }
+
+    .form-content label {
+      margin-bottom: 5px;
+    }
+
+    .button {
+      margin-top: 20px;
+      padding: 5px;
+      margin-top: 20px;
+      padding: 10px 15px;
+      font-size: 16px;
+      cursor: pointer;
+      border: none;
+      border-radius: 10px;
+      background-color: cornflowerblue;
+    }
+  </style>
+  <title>Login</title>
+</head>
+
+<body>
+  <div class="register-container">
+    <header class="join-header">
+      <h1>Express Chat</h1>
+      <p class="join-header-info">It's unopinionated and fast</p>
+    </header>
+
+
+    <form method="post" action="/user/register">
+      <div class="form-content">
+        <label for"username">Username</label>
+        <input type="text" name="username" id="username" placeholder="Enter username ..." required />
+      </div>
+      <div class="form-content">
+        <label> Password</label>
+        <input type="password" name="password" />
+      </div>
+      <div>
+        <input type="submit" class="button" value="Register">
+      </div>
+    </form>
+    </form>
   </div>
-  <div>
-    <label> Password</label>
-    <input type="password" name="password" />
-  </div>
-  <div>
-    <input type="submit" value="Register">
-  </div>
-</form>
+</body>
