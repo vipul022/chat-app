@@ -4,6 +4,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box
+    }
+  </style>
   <title>Dashboard</title>
 
 </head>
@@ -19,19 +27,21 @@
       {{#if loggedIn}}
       <form action="/chat">
         <div class="username">
-          <label for"username">Username</label>
-          <input type="text" name="username" id="username" placeholder="Enter username ..." />
+          <label for"username">Nickname:</label>
+          <input type="text" name="nickname" id="nickname" required placeholder="Enter username ..." />
         </div>
         <div class="room">
           <label for"room">Room</label>
           <select name="room" id="room">
-            <option value="code">Code</option>
-            <option value="music">Music</option>
-            <option value="fun">Fun</option>
-            <option value="events">Events</option>
+            <option value="Code">Code</option>
+            <option value="Music">Music</option>
+            <option value="Fun">Fun</option>
+            <option value="Events">Events</option>
           </select>
+          <label for="color">Chat Color</label>
+          <input type="color" name="color" id="color">
         </div>
-        <button type="submit" class="button">Join Chat</button>
+        <button type="submit" class="join-button">Join Chat</button>
       </form>
       <a href="/user/logout">Log Out</a>
       {{else}}
@@ -41,10 +51,6 @@
     </div>
 
   </div>
-
-
-
-
 
 </body>
 
