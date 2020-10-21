@@ -125,26 +125,46 @@
 
       </div>
       <form action="/chat">
+<<<<<<< HEAD:server/views/dashboard.handlebars
         <div class="form-content">
           <label for"username">Nickname: </label>
           <input type="text" name="nickname" id="nickname" placeholder="Enter nickname ..." required />
+=======
+        <div class="username">
+          <label for"username">Nickname:</label>
+          <input type="text" name="nickname" id="nickname" required placeholder="Enter username ..." />
+>>>>>>> main:views/dashboard.handlebars
         </div>
         <div class="form-content">
           <label for"room">Room</label>
+<<<<<<< HEAD:server/views/dashboard.handlebars
           <select name="room" id=" room">
             <option value="" disabled selected>Select your option</option>
             <option value="code">Code</option>
             <option value="music">Music</option>
             <option value="fun">Fun</option>
             <option value="events">Events</option>
+=======
+          <select name="room" id="room">
+            <option value="Code">Code</option>
+            <option value="Music">Music</option>
+            <option value="Fun">Fun</option>
+            <option value="Events">Events</option>
+>>>>>>> main:views/dashboard.handlebars
           </select>
+          <label for="color">Chat Color</label>
+          <input type="color" name="color" id="color">
         </div>
+<<<<<<< HEAD:server/views/dashboard.handlebars
         <div class="btns">
           <button type="submit" class="button">Join Chat</button>
       </form>
 
       <form action="/user/logout">
         <input type="submit" class="button" value="Log out" />
+=======
+        <button type="submit" class="join-button">Join Chat</button>
+>>>>>>> main:views/dashboard.handlebars
       </form>
       <div />
     </div>
@@ -157,6 +177,7 @@
         <input type="submit" class="button" value="Login" />
       </form>
 
+<<<<<<< HEAD:server/views/dashboard.handlebars
       <form action="/user/register">
         <input type="submit" class="button" value="Register" />
       </form>
@@ -164,6 +185,8 @@
 
 
     {{/if}}
+=======
+>>>>>>> main:views/dashboard.handlebars
   </div>
 
 </body>
